@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>BDSwiss Coupon</title>
+
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+	<!-- jQuery library -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+	<!-- Latest compiled JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+	<!-- Fonts -->
+	<link href='//fonts.googleapis.com/css?family=Roboto:400,300' rel='stylesheet' type='text/css'>
+	
+	<style>
+				body {
+		  padding-top: 50px;
+		}
+		.spacer {
+		  margin-top: 2%;
+		  margin-bottom: 2%;
+		}      
+		.block {
+		  height: 300px;
+		  padding-top: 15px;  
+		}  
+		.block2 {
+		  min-height: 50%;
+		  padding-top: 15px; 
+		} 
+		.center {
+		  position: absolute;
+		/*  top: 0;
+		  bottom: 0; */
+		  left: 0;
+		  right: 0;
+		  margin: auto;  
+		}
+	</style>
+</head>
+<body>
+	<div class="container col-lg-12 spacer"></div>
+    	<div class="container col-lg-12 block">
+    		<h1 align="center">BDSwiss Bonus Coupon</h1>
+        	<div class="row col-xs-6 block2 bg-primary center">
+			<form align='center'>
+			  <div class="form-group">
+			  	 <label class="sr-only" for="number">Phone Number</label>
+				  <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+				    <div class="input-group-addon">+357</div>
+				    <input type="number" pattern="\d+" class="form-control" id="number" placeholder="Phone Number">
+				  </div>
+			  
+			  <div class="checkbox">
+			    <label><input type="checkbox" id="age" required> I am over 18</label>
+			  </div>
+			  <div class="checkbox">
+			    <label><input type="checkbox" id="terms" required> I accept the terms and conditions</label>
+			  </div>
+			  <button type="submit" class="btn btn-warning" id="checkBtn">Redeem Coupon</button>
+			</div>
+			</form>
+  </div>
+</div>
+
+	<!-- Scripts -->
+
+	<script type="text/javascript">
+
+		//AJAX request to a PHP script that uses the Twilio API to send the message to the user
+		function ajaxrequest(){
+		    var xhr2 = new XMLHttpRequest();
+		    
+		    xhr2.addEventListener ("load", receiveData);
+
+			var num = document.getElementById("number").value;
+
+		    xhr2.open("POST","/coupon-master/generateCoupon.php?num=" + num);
+		    xhr2.send();
+		}
+
+		// The callback function
+		function receiveData(e)
+		{
+		    
+		}
+
+		//Function that discovers if the checkboxes in the form are both being checked by the user
+		$(document).ready(function () {
+    		$('#checkBtn').click(function() {
+		      checked = $("#age:checked,#terms:checked").length;
+
+		      if(!$("#age").is(':checked') && !$("#terms").is(':checked') && $.trim($('#number').val()) == ""){
+		      	alert("You must enter a phone number");
+		      	alert("You must accept the Age Restrictions and the Terms & Conditions");
+		      	return false;
+		      }
+		      else if(!$("#age").is(':checked') && !$("#terms").is(':checked')){
+		      	alert("You must accept the Age Restrictions and the Terms & Conditions");
+		      	return false;
+		      }
+		      else if(!$("#age").is(':checked') && $.trim($('#number').val()) == ""){
+		      	alert("You must enter a phone number");
+		      	alert("You must accept the Age Restrictions");
+		      	return false;
+		      }
+		      else if(!$("#terms").is(':checked') && $.trim($('#number').val()) == ""){
+		      	alert("You must enter a phone number");
+		      	alert("You must accept the Terms & Conditions");
+		      	return false;
+		      }
+		      else if(!$("#age").is(':checked')){
+		      	alert("You must accept the Age Restrictions");
+		      	return false;
+		      }
+		      else if(!$("#terms").is(':checked')){
+		      	alert("You must accept the Terms & Conditions");
+		      	return false;
+		      }
+		      else if ($.trim($('#number').val()) == ""){
+				alert("You must enter a phone number");
+		      	return false;
+				}
+		      else{
+		      	if($("#number").val().length != 8){
+		      		alert("The phone number must be 8 numbers long e.g. 99123456");
+		      		return false;
+		      	}
+		      	else{
+		      	ajaxrequest();
+		      	alert("The promotional code has been sent successfully!");
+		      }
+		      }
+
+    });
+});
+	</script>
+
+</body>
+</html>
